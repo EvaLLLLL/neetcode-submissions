@@ -1,0 +1,28 @@
+class Solution:
+    def findAllConcatenatedWordsInADict(self, words: List[str]) -> List[str]:
+        wordSet = set(words)
+        dp = {}
+
+# O (N * L^4) -> O(N * L^3)
+        def dfs(word):
+            if word in dp:
+                return dp[word]
+
+            for i in range(1, len(word)):
+                prefix = word[:i]
+                suffix = word[i:]
+
+                if ((prefix in wordSet) and (suffix in wordSet)) or (prefix in wordSet and dfs(suffix)):
+                    dp[word] = True
+                    return True
+                
+            dp[word] = False
+            return False
+
+        res = []
+
+        for w in words:
+            if dfs(w):
+                res.append(w)
+
+        return res
